@@ -14,47 +14,49 @@ class Lexer:
         except StopIteration:
             self.current_char = None
     
-    
     def generate_tokens(self):
-        while self.current_char != None:
+        tokens = []
+        while self.current_char is not None:
             if self.current_char in WHITESPACE:
                 self.advance()
             elif self.current_char in DIGITS or self.current_char == '.':
-                yield self.generate_number()
+                tokens.append(self.generate_number())
             elif self.current_char == '+':
                 self.advance()
-                yield Token(TokenType.PLUS)
+                tokens.append(Token(TokenType.PLUS))
             elif self.current_char == '-':
                 self.advance()
-                yield Token(TokenType.MINUS)
+                tokens.append(Token(TokenType.MINUS))
             elif self.current_char == '*':
                 self.advance()
                 if self.current_char == '*':
                     self.advance()
-                    yield Token(TokenType.EXPONENT)
+                    tokens.append(Token(TokenType.EXPONENT))
                 else:
-                    yield Token(TokenType.MULTIPLY)
+                    tokens.append(Token(TokenType.MULTIPLY))
             elif self.current_char == '%':
                 self.advance()
-                yield Token(TokenType.MODULUS)
+                tokens.append(Token(TokenType.MODULUS))
             elif self.current_char == '/':
                 self.advance()
-                yield Token(TokenType.DIVIDE)
+                tokens.append(Token(TokenType.DIVIDE))
             elif self.current_char == '(':
                 self.advance()
-                yield Token(TokenType.LPAREN)
+                tokens.append(Token(TokenType.LPAREN))
             elif self.current_char == ')':
                 self.advance()
-                yield Token(TokenType.RPAREN)
+                tokens.append(Token(TokenType.RPAREN))
             else:
-                raise Exception(f"Illegal Character: '{self.current_char}'")    
+                raise Exception(f"Illegal Character: '{self.current_char}'")
+        
+        return tokens 
     
     
     def generate_number(self):
         number_str = self.current_char
         self.advance()
         
-        while self.current_char != None and (self.current_char in DIGITS or self.current_char == '.'):
+        while self.current_char is not None and (self.current_char in DIGITS or self.current_char == '.'):
             number_str += self.current_char
             self.advance()
         
