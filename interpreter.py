@@ -2,9 +2,26 @@ from nodes import *
 
 class Interpreter:
     def visit(self, node):
-        method_name = f'visit_{type(node).__name__}'
-        method = getattr(self, method_name)
-        return method(node)
+        if isinstance(node, NumberNode):
+            return self.visit_NumberNode(node)
+        elif isinstance(node, AddNode):
+            return self.visit_AddNode(node)
+        elif isinstance(node, SubtractNode):
+            return self.visit_SubtractNode(node)
+        elif isinstance(node, MultiplyNode):
+            return self.visit_MultiplyNode(node)
+        elif isinstance(node, DivideNode):
+            return self.visit_DivideNode(node)
+        elif isinstance(node, ModulusNode):
+            return self.visit_ModulusNode(node)
+        elif isinstance(node, ExponentNode):
+            return self.visit_ExponentNode(node)
+        elif isinstance(node, PlusNode):
+            return self.visit_PlusNode(node)
+        elif isinstance(node, MinusNode):
+            return self.visit_MinusNode(node)
+        else:
+            raise Exception(f"No visit method defined for node type: {type(node).__name__}")
 
     def visit_NumberNode(self, node):
         return node.value
